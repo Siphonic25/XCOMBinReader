@@ -11,7 +11,15 @@
          */
         private static void Main(string[] args)
         {
+            //short term objective (Step 1):
+            //open a .bin file, read each character individually, and print to console until the file has ended
             Console.WriteLine("Hello, World!");
+            Console.ReadLine();
+
+            using (BinaryReader br = new BinaryReader(File.Open("/Siph_A_Lotta_Weasels.bin")))
+            {
+
+            }
         }
     }
 }
