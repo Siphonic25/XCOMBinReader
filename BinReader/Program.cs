@@ -36,21 +36,21 @@ namespace BinReader
                         //Console.ReadLine();
                         try
                         {
-                            int i = 0, j = 0;
+                            //int i = 0, j = 0;
                             while(true)
                             {
-                                if (i < 15)
-                                {
-                                    Console.WriteLine(Convert.ToChar(reader.ReadByte()));
+                                //if (i < 15)
+                                //{
+                                    Console.Write(Convert.ToChar(reader.ReadByte()));
                                     //Convert.ToChar(reader.ReadByte());
-                                    i++;
-                                }
-                                else
-                                {
-                                    Console.Write("line " + j + "\n");
-                                    i = 0;
-                                    j++;
-                                }
+                                    //i++;
+                                //}
+                                //else
+                                //{
+                                //    Console.Write("line " + j + "\n");
+                                //    i = 0;
+                                //    j++;
+                                //}
                             }
                         }
                         catch
