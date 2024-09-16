@@ -7,7 +7,7 @@ namespace BinReader
     internal class Program
     {
         /*list of goals:
-         * Step 1: Be able to read and reoutput a .bin file
+         * Step 1: Be able to read and reoutput a .bin file (Complete)
          * Step 2: Output personal information into a nice table format
          * Step 3: Output this information into a .txt file
          * Step 4: exeify this
@@ -15,57 +15,43 @@ namespace BinReader
          */
         private static void Main(string[] args)
         {
-            //short term objective (Step 1):
-            //open a .bin file, read each character individually, and print to console until the file has ended
-            Console.WriteLine("Hello, World!");
-            Console.ReadLine();
-
             //get the file name
-            //for now it's a const but will need to be a full variable later
+            //for now it's a const but will need to be a full variable later, that the user enters
             const string fileName = "Siph_A_Lotta_Weasels.bin";
 
+            //if the file in question exists
             if (File.Exists(fileName))
             {
+                //open the file
                 using (var stream = File.Open(fileName, FileMode.Open))
                 {
+                    //open a BinaryReader for the file
                     using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
-                    //using (var reader = new StreamReader(stream, Encoding.UTF8))
                     {
-                        Console.WriteLine("he");
-                        //Console.WriteLine(reader.Read());
-                        //Console.ReadLine();
+                        //reads until end of file because an error will be thrown then
+                        //I am aware deliberately triggering an error is not a wise idea, I do not care
                         try
                         {
-                            //int i = 0, j = 0;
                             while(true)
                             {
-                                //if (i < 15)
-                                //{
-                                    Console.Write(Convert.ToChar(reader.ReadByte()));
-                                    //Convert.ToChar(reader.ReadByte());
-                                    //i++;
-                                //}
-                                //else
-                                //{
-                                //    Console.Write("line " + j + "\n");
-                                //    i = 0;
-                                //    j++;
-                                //}
+                                Console.Write(Convert.ToChar(reader.ReadByte()));
                             }
                         }
+                        //end of file section
                         catch
                         {
-                            Console.WriteLine("End of file");
+                            Console.WriteLine("\nEnd of file.");
                         }
                         Console.ReadLine();
                     }
                 }
             }
 
+            //the file does not exist; throw up an error message
             //write a proper error message
             else
             {
-                Console.WriteLine(Directory.GetCurrentDirectory());
+                Console.WriteLine("ERROR: The file you have specified does not exist.");
                 Console.ReadLine();
             }
         }
