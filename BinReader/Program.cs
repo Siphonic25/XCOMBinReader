@@ -26,11 +26,37 @@ namespace BinReader
 
             if (File.Exists(fileName))
             {
-                using (var stream = File.OpenRead(fileName))
+                using (var stream = File.Open(fileName, FileMode.Open))
                 {
                     using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
+                    //using (var reader = new StreamReader(stream, Encoding.UTF8))
                     {
                         Console.WriteLine("he");
+                        //Console.WriteLine(reader.Read());
+                        //Console.ReadLine();
+                        try
+                        {
+                            int i = 0, j = 0;
+                            while(true)
+                            {
+                                if (i < 15)
+                                {
+                                    Console.WriteLine(Convert.ToChar(reader.ReadByte()));
+                                    //Convert.ToChar(reader.ReadByte());
+                                    i++;
+                                }
+                                else
+                                {
+                                    Console.Write("line " + j + "\n");
+                                    i = 0;
+                                    j++;
+                                }
+                            }
+                        }
+                        catch
+                        {
+                            Console.WriteLine("End of file");
+                        }
                         Console.ReadLine();
                     }
                 }
