@@ -1,4 +1,8 @@
-﻿namespace BinReader
+﻿using System;
+using System.IO;
+using System.Text;
+
+namespace BinReader
 {
     internal class Program
     {
@@ -16,9 +20,27 @@
             Console.WriteLine("Hello, World!");
             Console.ReadLine();
 
-            using (BinaryReader br = new BinaryReader(File.Open("/Siph_A_Lotta_Weasels.bin")))
-            {
+            //get the file name
+            //for now it's a const but will need to be a full variable later
+            const string fileName = "Siph_A_Lotta_Weasels.bin";
 
+            if (File.Exists(fileName))
+            {
+                using (var stream = File.OpenRead(fileName))
+                {
+                    using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
+                    {
+                        Console.WriteLine("he");
+                        Console.ReadLine();
+                    }
+                }
+            }
+
+            //write a proper error message
+            else
+            {
+                Console.WriteLine(Directory.GetCurrentDirectory());
+                Console.ReadLine();
             }
         }
     }
