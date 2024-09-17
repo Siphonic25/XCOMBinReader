@@ -28,11 +28,11 @@ namespace BinReader
                     {
                         //perform findCharacter until the character 'E' (69) is the next one, then print it
 
-                        int check = FindCharacter(reader, 69);
-                        Console.WriteLine(Convert.ToChar(reader.ReadByte()));
+                        //int check = FindCharacter(reader, 69);
+                        //Console.WriteLine(Convert.ToChar(reader.ReadByte()));
 
-
-
+                        Console.WriteLine(FindString(reader, "ExtraDatas"));
+                        Console.WriteLine(FindString(reader, "Bingus"));
 
                         //reads until end of file because an error will be thrown then
                         //I am aware deliberately triggering an error is not a wise idea, I do not care
@@ -52,6 +52,9 @@ namespace BinReader
                             //Console.WriteLine("\nEnd of file.");
                         //}
                         //Console.ReadLine();
+
+                        //for now, this is bunk newline code
+                        Console.Write("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
                     }
                 }
             }
@@ -69,19 +72,34 @@ namespace BinReader
         //could convert this to int returning like FindChararacter?
         private static string FindString(BinaryReader reader, string str)
         {
-            //use FindChar with the first character of the requested string
-            //if the return is 1, return an error message (or a 1 if converted)
-            //if the return is 0, character has been found
-            //read the following [STRING LENGTH] characters and compare with given string
-            //if they match, return it (yeah I should swap to int shit)
-            //if they do not, loop again
-
             //keep going until the string has been found
             while (true)
             {
+                //use FindChar with the first character of the requested string
+                //converts the char to its ASCII format by casting to an int
                 int charCode = (int)str[0];
-
                 int check = FindCharacter(reader, charCode);
+
+                //if the return is 0, character has been found
+                if (check == 0)
+                {
+                    //read the following [STRING LENGTH] bytes into a string (char array then converted)
+                    char[] data = new char[str.Length];
+                    reader.Read(data, 0, data.Length);
+                    string readStr = new string(data);
+
+                    //compare strings; if they match, return it, if not keep going
+                    if (readStr.Equals(str))
+                    {
+                        return readStr;
+                    }
+
+                    //else there's been an error (we've hit end-of-file) so return error message
+                    else
+                    {
+                        return "ERROR";
+                    }
+                }
             }
         }
 
