@@ -21,26 +21,41 @@ namespace BinReader
             if (File.Exists(fileName))
             {
                 //open the file
-                using (var stream = File.Open(fileName, FileMode.Open))
+                using (FileStream stream = File.Open(fileName, FileMode.Open))
                 {
                     //open a BinaryReader for the file
-                    using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
+                    using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, false))
                     {
+                        //perform findCharacter until the character 'E' (69) is the next one, then print it
+
+                        int check = FindCharacter(reader, 69);
+                        Console.WriteLine(Convert.ToChar(reader.ReadByte()));
+
+
+
+
+
+
+
+
                         //reads until end of file because an error will be thrown then
                         //I am aware deliberately triggering an error is not a wise idea, I do not care
-                        try
-                        {
-                            while(true)
-                            {
-                                Console.Write(Convert.ToChar(reader.ReadByte()));
-                            }
-                        }
+                        //int i = 0;
+                        //try
+                        //{
+                            //while(i < 100)
+                            //{
+                                //Console.WriteLine(reader.ReadByte().ToString("X"));
+                                //FindCharacter(reader, 1);
+                                //i++;
+                            //}
+                        //}
                         //end of file section
-                        catch
-                        {
-                            Console.WriteLine("\nEnd of file.");
-                        }
-                        Console.ReadLine();
+                        //catch
+                        //{
+                            //Console.WriteLine("\nEnd of file.");
+                        //}
+                        //Console.ReadLine();
                     }
                 }
             }
@@ -52,6 +67,34 @@ namespace BinReader
                 Console.WriteLine("ERROR: The file you have specified does not exist.");
                 Console.ReadLine();
             }
+        }
+
+        //reads the filestream until a desired character (given as their UTF-8 hex code in decimal) is found
+        //returns a 1 if the end of the file has been hit and a 0 otherwise
+        //potential improvement: let character be an actual character and convert to a proper UTF-8 code in-function
+        private static int FindCharacter(BinaryReader reader, int character)
+        {
+            //while the reader has not hit end-of-file
+            while (reader.BaseStream.Position != reader.BaseStream.Length)
+            {
+                //peek the next character
+                int nextChar =  reader.PeekChar();
+
+                //if it's the desired character, end the loop and hand back control
+                if (nextChar == character)
+                {
+                    return 0;
+                }
+
+                //else read the character and loop again
+                else
+                {
+                    reader.ReadByte();
+                }
+            }
+
+            //while loop has broken meaning we've hit end-of-file
+            return 1;
         }
     }
 }
