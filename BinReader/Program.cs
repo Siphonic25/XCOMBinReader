@@ -34,10 +34,6 @@ namespace BinReader
 
 
 
-
-
-
-
                         //reads until end of file because an error will be thrown then
                         //I am aware deliberately triggering an error is not a wise idea, I do not care
                         //int i = 0;
@@ -68,6 +64,27 @@ namespace BinReader
                 Console.ReadLine();
             }
         }
+
+        //reads the filestream until a specific string has been located
+        //could convert this to int returning like FindChararacter?
+        private static string FindString(BinaryReader reader, string str)
+        {
+            //use FindChar with the first character of the requested string
+            //if the return is 1, return an error message (or a 1 if converted)
+            //if the return is 0, character has been found
+            //read the following [STRING LENGTH] characters and compare with given string
+            //if they match, return it (yeah I should swap to int shit)
+            //if they do not, loop again
+
+            //keep going until the string has been found
+            while (true)
+            {
+                int charCode = (int)str[0];
+
+                int check = FindCharacter(reader, charCode);
+            }
+        }
+
 
         //reads the filestream until a desired character (given as their UTF-8 hex code in decimal) is found
         //returns a 1 if the end of the file has been hit and a 0 otherwise
