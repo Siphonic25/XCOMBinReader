@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Net.NetworkInformation;
+using System.Text;
 
 namespace BinReader
 {
@@ -26,45 +27,80 @@ namespace BinReader
                     //open a BinaryReader for the file
                     using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, false))
                     {
-                        //perform findCharacter until the character 'E' (69) is the next one, then print it
+                        //for now we Test
+                        //Console.WriteLine(FindString(reader, "ExtraDatas"));
+                        //Console.WriteLine(FindString(reader, "ArrayProperty"));
+                        //Console.WriteLine(FindString(reader, "ObjectID"));
+                        //Console.WriteLine(FindString(reader, "Bingus"));
 
-                        //int check = FindCharacter(reader, 69);
-                        //Console.WriteLine(Convert.ToChar(reader.ReadByte()));
+                        //next test:
+                        //read up to the first instance of strFirstName using FindString
+                        //then read up to StrProperty right afterwards
+                        //then use ReadData to read and print whatever follows
+                        //Console.WriteLine(FindString(reader, "strFirstName"));
+                        //Console.WriteLine(FindString(reader, "StrProperty"));
+                        //Console.WriteLine(ReadData(reader));
 
-                        Console.WriteLine(FindString(reader, "ExtraDatas"));
-                        Console.WriteLine(FindString(reader, "Bingus"));
+                        //next next test: read Weasel's full bullshit
+                        FindString(reader, "strFirstName");
+                        FindString(reader, "StrProperty");
+                        Console.WriteLine(ReadData(reader));
+                        FindString(reader, "strLastName");
+                        FindString(reader, "StrProperty");
+                        Console.WriteLine(ReadData(reader));
+                        FindString(reader, "strNickName");
+                        FindString(reader, "StrProperty");
+                        Console.WriteLine(ReadData(reader));
 
-                        //reads until end of file because an error will be thrown then
-                        //I am aware deliberately triggering an error is not a wise idea, I do not care
-                        //int i = 0;
-                        //try
-                        //{
-                            //while(i < 100)
-                            //{
-                                //Console.WriteLine(reader.ReadByte().ToString("X"));
-                                //FindCharacter(reader, 1);
-                                //i++;
-                            //}
-                        //}
-                        //end of file section
-                        //catch
-                        //{
-                            //Console.WriteLine("\nEnd of file.");
-                        //}
-                        //Console.ReadLine();
-
-                        //for now, this is bunk newline code
+                        //for now, this is bunk newline code that exists because my ass doesn't want to get doxxed by the end-of-console info
                         Console.Write("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
                     }
                 }
             }
 
             //the file does not exist; throw up an error message
-            //write a proper error message
             else
             {
                 Console.WriteLine("ERROR: The file you have specified does not exist.");
                 Console.ReadLine();
+            }
+        }
+
+        //from a starting point set by FindString, skip all characters lower than the lowest valid ASCII character (i.e. '!')
+        //then once a workable character is hit, keep going until first non-valid character, then stop and hand back data
+        private static string ReadData(BinaryReader reader)
+        {
+            //lowest possible value for me to give a damn tbh
+            const int minVal = 32;
+
+            while (true)
+            {
+                //peek the next character
+                int nextChar = (int)reader.PeekChar();
+                //if it's greater than the lowest value of a valid UTF-8 code (i.e. at or higher than 32);
+                if (nextChar >= minVal)
+                {
+                    List<char> chars = new List<char>();
+
+                    //start reading data into a char buffer until another below-min character is found
+                    while ((int)reader.PeekChar() >= 32)
+                    {
+                        chars.Add(reader.ReadChar());
+                    }
+
+                    //once complete, convert buffer to a string and return
+                    string str = new string(chars.ToArray());
+                    return str;
+                }
+
+                //there are no more characters available; we've hit end-of-file (oops).
+                else if (nextChar == -1)
+                {
+                    return "ERROR";
+                }
+
+                //consume a character to keep progressing
+                reader.ReadChar();
             }
         }
 
@@ -93,16 +129,15 @@ namespace BinReader
                     {
                         return readStr;
                     }
+                }
 
-                    //else there's been an error (we've hit end-of-file) so return error message
-                    else
-                    {
-                        return "ERROR";
-                    }
+                //else there's been an error (we've hit end-of-file) so return error message
+                else
+                {
+                    return "ERROR";
                 }
             }
         }
-
 
         //reads the filestream until a desired character (given as their UTF-8 hex code in decimal) is found
         //returns a 1 if the end of the file has been hit and a 0 otherwise
