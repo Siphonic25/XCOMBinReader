@@ -52,6 +52,16 @@ namespace BinReader
                         FindString(reader, "StrProperty");
                         Console.WriteLine(ReadData(reader));
 
+                        FindString(reader, "strFirstName");
+                        FindString(reader, "StrProperty");
+                        Console.WriteLine(ReadData(reader));
+                        FindString(reader, "strLastName");
+                        FindString(reader, "StrProperty");
+                        Console.WriteLine(ReadData(reader));
+                        FindString(reader, "strNickName");
+                        FindString(reader, "StrProperty");
+                        Console.WriteLine(ReadData(reader));
+
                         //for now, this is bunk newline code that exists because my ass doesn't want to get doxxed by the end-of-console info
                         Console.Write("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
                     }
@@ -147,17 +157,26 @@ namespace BinReader
             //while the reader has not hit end-of-file
             while (reader.BaseStream.Position != reader.BaseStream.Length)
             {
-                //peek the next character
-                int nextChar =  reader.PeekChar();
-
-                //if it's the desired character, end the loop and hand back control
-                if (nextChar == character)
+                //TODO: Explain this fucking try-catch loop because PeekChar is a wanker
+                try
                 {
-                    return 0;
+                    //peek the next character
+                    int nextChar = reader.PeekChar();
+
+                    //if it's the desired character, end the loop and hand back control
+                    if (nextChar == character)
+                    {
+                        return 0;
+                    }
+
+                    //else read the character and loop again
+                    else
+                    {
+                        reader.ReadByte();
+                    }
                 }
 
-                //else read the character and loop again
-                else
+                catch
                 {
                     reader.ReadByte();
                 }
