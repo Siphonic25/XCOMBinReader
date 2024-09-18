@@ -1,5 +1,4 @@
-﻿using System.Net.NetworkInformation;
-using System.Text;
+﻿using System.Text;
 
 namespace BinReader
 {
@@ -28,39 +27,23 @@ namespace BinReader
                     using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, false))
                     {
                         //for now we Test
-                        //Console.WriteLine(FindString(reader, "ExtraDatas"));
-                        //Console.WriteLine(FindString(reader, "ArrayProperty"));
-                        //Console.WriteLine(FindString(reader, "ObjectID"));
-                        //Console.WriteLine(FindString(reader, "Bingus"));
+                        
+                        //next next next test: PRINT ALL WEASELS
+                        string nextSoldier = FindString(reader, "strFirstName");
 
-                        //next test:
-                        //read up to the first instance of strFirstName using FindString
-                        //then read up to StrProperty right afterwards
-                        //then use ReadData to read and print whatever follows
-                        //Console.WriteLine(FindString(reader, "strFirstName"));
-                        //Console.WriteLine(FindString(reader, "StrProperty"));
-                        //Console.WriteLine(ReadData(reader));
+                        while (!nextSoldier.Equals("ERROR"))
+                        {
+                            FindString(reader, "StrProperty");
+                            Console.WriteLine(ReadData(reader));
+                            FindString(reader, "strLastName");
+                            FindString(reader, "StrProperty");
+                            Console.WriteLine(ReadData(reader));
+                            FindString(reader, "strNickName");
+                            FindString(reader, "StrProperty");
+                            Console.WriteLine(ReadData(reader));
+                            nextSoldier = FindString(reader, "strFirstName");
+                        }
 
-                        //next next test: read Weasel's full bullshit
-                        FindString(reader, "strFirstName");
-                        FindString(reader, "StrProperty");
-                        Console.WriteLine(ReadData(reader));
-                        FindString(reader, "strLastName");
-                        FindString(reader, "StrProperty");
-                        Console.WriteLine(ReadData(reader));
-                        FindString(reader, "strNickName");
-                        FindString(reader, "StrProperty");
-                        Console.WriteLine(ReadData(reader));
-
-                        FindString(reader, "strFirstName");
-                        FindString(reader, "StrProperty");
-                        Console.WriteLine(ReadData(reader));
-                        FindString(reader, "strLastName");
-                        FindString(reader, "StrProperty");
-                        Console.WriteLine(ReadData(reader));
-                        FindString(reader, "strNickName");
-                        FindString(reader, "StrProperty");
-                        Console.WriteLine(ReadData(reader));
 
                         //for now, this is bunk newline code that exists because my ass doesn't want to get doxxed by the end-of-console info
                         Console.Write("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
@@ -76,8 +59,8 @@ namespace BinReader
             }
         }
 
-        //from a starting point set by FindString, skip all characters lower than the lowest valid ASCII character (i.e. '!')
-        //then once a workable character is hit, keep going until first non-valid character, then stop and hand back data
+        //from a pre-set starting point, skip all characters lower than the lowest valid ASCII character (i.e. '!')
+        //then once a workable character is hit, keep going until first non-valid character, then return the read data
         private static string ReadData(BinaryReader reader)
         {
             //lowest possible value for me to give a damn tbh

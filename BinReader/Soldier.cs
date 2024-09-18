@@ -3,18 +3,14 @@
     //contains all of a soldier's information for easy printing
     public class Soldier
     {
-        private string firstName = "";
-        private string lastName = "";
-        private string nickName = "";
-        private string soldierClass = "";
-        private string gender = "";
-        private string nationality = "";
-        //private string[] bio;        //I have no idea how to do bios right now
+        private string firstName = "";      //soldier's first name
+        private string lastName = "";       //soldier's last name
+        private string nickName = "";       //soldier's callsign (lmao the spelling)
+        private string soldierClass = "";   //soldier's class
+        private string gender = "";         //soldier's gender
+        private string nationality = "";    //soldier's nationality
+        //private string[] bio;             //I have no idea how to do bios right now
 
-        //empty constructor, initialises things
-        public Soldier()
-        {
-        }
 
         //getters and setters baby
         //we all love some getters and setters
@@ -48,14 +44,8 @@
             set
             {
                 //test this boy
-                if (value.Equals("1"))
-                {
-                    gender = "Male";
-                }
-                else
-                {
-                    gender = "Female";
-                }
+                if (value.Equals("1")) { gender = "Male"; }
+                else { gender = "Female"; }
             }
         }
 
