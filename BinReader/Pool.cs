@@ -16,20 +16,23 @@ namespace BinReader
         //will also need to be renovated/replaced by a PrintPoolToFile command
         public void PrintPool()
         {
-            Console.WriteLine("POOL [FILE NAME]\n\n");
-            Console.WriteLine("FIRST NAME | LAST NAME | NICKNAME  |   CLASS   |GENDER|  NATIONALITY  ");
-            Console.WriteLine("-----------|-----------|-----------|-----------|------|---------------");
+            //Console.WriteLine("POOL [FILE NAME]\n\n");    //straight up don't feel like doing this rn
+            Console.WriteLine("FIRST NAME | LAST NAME |  NICKNAME   |   CLASS   |GENDER|  NATIONALITY  ");
+            Console.WriteLine("-----------|-----------|-------------|-----------|------|---------------");
             //now print all the soldier details
             foreach (Soldier soldier in soldiers)
             {
                 //awful
                 Console.WriteLine(soldier.FirstName.PadRight(11) + "|" 
                     + soldier.LastName.PadRight(11) + "|"
-                    + soldier.NickName.PadRight(11) + "|"
+                    + soldier.NickName.PadRight(13) + "|"
                     + soldier.SoldierClass.PadRight(11) + "|"
                     + soldier.Gender.PadRight(6) + "|"
                     + soldier.Nationality);
             }
         }
+
+        //as above, but prints to a newly created text file with the given name
+        public void PrintPoolToFile
     }
 }
