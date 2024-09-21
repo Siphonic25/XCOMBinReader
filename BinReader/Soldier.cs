@@ -41,12 +41,7 @@
         public string Gender
         {
             get { return gender; }
-            set
-            {
-                //test this boy
-                if (value.Equals("1")) { gender = "Male"; }
-                else { gender = "Female"; }
-            }
+            set { gender = value; }
         }
 
         public string Nationality

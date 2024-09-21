@@ -29,9 +29,9 @@ namespace BinReader
                         //for now we Test
                         
                         //next next next test: PRINT ALL WEASELS
-                        string nextSoldier = FindString(reader, "strFirstName");
+                        int nextSoldier = FindString(reader, "strFirstName");
 
-                        while (!nextSoldier.Equals("ERROR"))
+                        while (nextSoldier != 1)
                         {
                             FindString(reader, "StrProperty");
                             Console.WriteLine(ReadData(reader));
@@ -41,7 +41,18 @@ namespace BinReader
                             FindString(reader, "strNickName");
                             FindString(reader, "StrProperty");
                             Console.WriteLine(ReadData(reader));
+                            FindString(reader, "ClassTemplateName");
+                            FindString(reader, "NameProperty");
+                            Console.WriteLine(ReadData(reader));
+                            FindString(reader, "iGender");
+                            FindString(reader, "IntProperty");
+                            Console.WriteLine(ReadGender(reader));
+                            FindString(reader, "nmFlag");
+                            FindString(reader, "NameProperty");
+                            Console.WriteLine(ReadData(reader));
+
                             nextSoldier = FindString(reader, "strFirstName");
+                            Console.WriteLine();
                         }
 
 
