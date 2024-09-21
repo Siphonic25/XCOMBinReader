@@ -59,6 +59,56 @@ namespace BinReader
             }
         }
 
+        //when moved to iGender, reads until the *second* piece of non-zero data, and grabs it
+        //if 1, it returns "Male", if 0, it returns "Female", else, it returns "ERROR"
+        private static string ReadGender(BinaryReader reader)
+        {
+            //need to skip the first bit of data (usually an 04)
+            int counter = 0;
+
+            while (true)
+            {
+                //peek the next character
+                int nextChar = (int)reader.PeekChar();
+                //if it's nonzero, increment counter
+                if (nextChar != 0)
+                {
+                    counter++;
+
+                    //if counter is now 2, we're on our second bit of data, so nextChar is our desired data
+                    if (counter == 2)
+                    {
+                        //if 1, male
+                        if (nextChar == 1)
+                        {
+                            return "Male";
+                        }
+
+                        //else if 2, female
+                        else if (nextChar == 2)
+                        {
+                            return "Female";
+                        }
+
+                        //else oops
+                        else
+                        {
+                            return "Error";
+                        }
+                    }
+                }
+
+                //there are no more characters available; we've hit end-of-file (oops).
+                else if (nextChar == -1)
+                {
+                    return "ERROR";
+                }
+
+                //consume a character to keep progressing
+                reader.ReadChar();
+            }
+        }
+
         //from a pre-set starting point, skip all characters lower than the lowest valid ASCII character (i.e. '!')
         //then once a workable character is hit, keep going until first non-valid character, then return the read data
         private static string ReadData(BinaryReader reader)
@@ -98,8 +148,8 @@ namespace BinReader
         }
 
         //reads the filestream until a specific string has been located
-        //could convert this to int returning like FindChararacter?
-        private static string FindString(BinaryReader reader, string str)
+        //returns 1 if we've hit end-of-file and 0 if the string has been found
+        private static int FindString(BinaryReader reader, string str)
         {
             //keep going until the string has been found
             while (true)
@@ -120,14 +170,14 @@ namespace BinReader
                     //compare strings; if they match, return it, if not keep going
                     if (readStr.Equals(str))
                     {
-                        return readStr;
+                        return 0;
                     }
                 }
 
                 //else there's been an error (we've hit end-of-file) so return error message
                 else
                 {
-                    return "ERROR";
+                    return 1;
                 }
             }
         }
