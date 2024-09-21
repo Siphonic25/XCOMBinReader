@@ -4,7 +4,6 @@ namespace BinReader
     public class Pool
     {
         private List<Soldier> soldiers = [];    //list of all the soldiers in the pool
-        
 
 
         //adds a soldier to the Pool's list
@@ -20,7 +19,17 @@ namespace BinReader
             Console.WriteLine("POOL [FILE NAME]\n\n");
             Console.WriteLine("FIRST NAME | LAST NAME | NICKNAME  |   CLASS   |GENDER|  NATIONALITY  ");
             Console.WriteLine("-----------|-----------|-----------|-----------|------|---------------");
-            //now print all the soldier shit
+            //now print all the soldier details
+            foreach (Soldier soldier in soldiers)
+            {
+                //awful
+                Console.WriteLine(soldier.FirstName.PadRight(11) + "|" 
+                    + soldier.LastName.PadRight(11) + "|"
+                    + soldier.NickName.PadRight(11) + "|"
+                    + soldier.SoldierClass.PadRight(11) + "|"
+                    + soldier.Gender.PadRight(6) + "|"
+                    + soldier.Nationality);
+            }
         }
     }
 }

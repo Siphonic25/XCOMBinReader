@@ -9,11 +9,12 @@
         private string soldierClass = "";   //soldier's class
         private string gender = "";         //soldier's gender
         private string nationality = "";    //soldier's nationality
-        //private string[] bio;             //I have no idea how to do bios right now
+                                            //private string[] bio;             //I have no idea how to do bios right now
 
 
         //getters and setters baby
         //we all love some getters and setters
+        //god I love Properties
         public string FirstName
         {
             get { return firstName; } 
