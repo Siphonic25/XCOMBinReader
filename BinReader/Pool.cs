@@ -1,3 +1,5 @@
+using System.Reflection;
+
 namespace BinReader
 {
     //a representation of the entire pool containing all of its soldiers
@@ -23,7 +25,7 @@ namespace BinReader
             foreach (Soldier soldier in soldiers)
             {
                 //awful
-                Console.WriteLine(soldier.FirstName.PadRight(11) + "|" 
+                Console.WriteLine(soldier.FirstName.PadRight(11) + "|"
                     + soldier.LastName.PadRight(11) + "|"
                     + soldier.NickName.PadRight(13) + "|"
                     + soldier.SoldierClass.PadRight(11) + "|"
@@ -33,6 +35,39 @@ namespace BinReader
         }
 
         //as above, but prints to a newly created text file with the given name
-        public void PrintPoolToFile
+        public void PrintPoolToFile(string file)
+        {
+            //reconstruct the requested file path
+            string filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/" + file;
+
+            //if the file does exist, kill it (sorry file)
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            //create file
+            using (FileStream fs = File.Create(filePath))
+            {
+                //create StreamWriter for it
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    //copy the writing code and pray
+                    sw.WriteLine("FIRST NAME | LAST NAME |  NICKNAME   |   CLASS   |GENDER|  NATIONALITY  ");
+                    sw.WriteLine("-----------|-----------|-------------|-----------|------|---------------");
+                    //now print all the soldier details
+                    foreach (Soldier soldier in soldiers)
+                    {
+                        //awful
+                        sw.WriteLine(soldier.FirstName.PadRight(11) + "|"
+                            + soldier.LastName.PadRight(11) + "|"
+                            + soldier.NickName.PadRight(13) + "|"
+                            + soldier.SoldierClass.PadRight(11) + "|"
+                            + soldier.Gender.PadRight(6) + "|"
+                            + soldier.Nationality);
+                    }
+                }
+            }
+        }
     }
 }

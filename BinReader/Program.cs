@@ -15,7 +15,8 @@ namespace BinReader
         {
             //get the file name
             //for now it's a const but will need to be a full variable later, that the user enters
-            const string fileName = "Siph_A_Lotta_Weasels.bin";
+            //const string fileName = "Siph_A_Lotta_Weasels.bin";
+            const string fileName = "Siph_Julijana_Milena.bin";
 
             //if the file in question exists
             if (File.Exists(fileName))
@@ -73,6 +74,9 @@ namespace BinReader
 
                         //print the pool baby
                         pool.PrintPool();
+
+                        //TESTING TIME: PRINT POOL TO FILE
+                        pool.PrintPoolToFile("Siph_Julijana_Milena.txt");
 
                         //for now, this is bunk newline code that exists because my ass doesn't want to get doxxed by the end-of-console info
                         Console.Write("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
@@ -140,15 +144,21 @@ namespace BinReader
 
             while (true)
             {
-                //peek the next character
-                int nextChar = (int)reader.PeekChar();
+                //pull the next character
+                int nextChar = reader.ReadByte();
+
                 //if it's greater than the lowest value of a valid UTF-8 code (i.e. at or higher than 32);
                 if (nextChar >= minVal)
                 {
                     List<char> chars = [];
 
-                    //start reading data into a char buffer until another below-min character is found
-                    while ((int)reader.PeekChar() >= 32) { chars.Add(reader.ReadChar()); }
+                    while (nextChar >= minVal)
+                    {
+                        //add the read character
+                        chars.Add(Convert.ToChar(nextChar));
+                        //read the next one
+                        nextChar = reader.ReadByte();
+                    }
 
                     //once complete, convert buffer to a string and return
                     string str = new(chars.ToArray());
@@ -157,9 +167,6 @@ namespace BinReader
 
                 //there are no more characters available; we've hit end-of-file (oops).
                 else if (nextChar == -1) { return "ERROR"; }
-
-                //consume a character to keep progressing
-                reader.ReadChar();
             }
         }
 
