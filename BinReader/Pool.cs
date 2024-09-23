@@ -37,8 +37,8 @@ namespace BinReader
         //as above, but prints to a newly created text file with the given name
         public void PrintPoolToFile(string file)
         {
-            //reconstruct the requested file path
-            string filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/" + file;
+            //trim the file path so it points to a .txt instead of a .bin
+            string filePath = file.Remove(file.Length - 3, 3) + "txt";
 
             //if the file does exist, kill it (sorry file)
             if (File.Exists(filePath))

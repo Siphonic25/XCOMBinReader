@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Reflection;
+using System.Text;
 
 namespace BinReader
 {
@@ -16,79 +17,93 @@ namespace BinReader
             //get the file name
             //for now it's a const but will need to be a full variable later, that the user enters
             //const string fileName = "Siph_A_Lotta_Weasels.bin";
-            const string fileName = "Siph_Julijana_Milena.bin";
+            //const string fileName = "Siph_Julijana_Milena.bin";
 
-            //if the file in question exists
-            if (File.Exists(fileName))
+            //get all of the possible valid file names (i.e. any file in this folder that ends in .bin)
+            //string fileFolder  = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            //Console.WriteLine(fileFolder);
+            string[] filePaths = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.bin");
+            
+
+            //for every valid .bin file we have found
+            foreach (string path in filePaths)
             {
-                //open the file
-                using (FileStream stream = File.Open(fileName, FileMode.Open))
+                //if the file in question exists
+                if (File.Exists(path))
                 {
-                    //open a BinaryReader for the file
-                    using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, false))
+                    Pool pool = new();
+
+                    //open the file
+                    using (FileStream stream = File.Open(path, FileMode.Open))
                     {
-                        //pool for storing characters
-                        Pool pool = new();
-
-                        //each soldier has one instance of "strFirstName", so use this as separating point
-                        int nextSoldier = FindString(reader, "strFirstName");
-                        
-                        //when nextSoldier returns 1 we've ran out of stuff in the bin
-                        while (nextSoldier != 1)
+                        //open a BinaryReader for the file
+                        using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, false))
                         {
-                            Soldier soldier = new();
+                            //pool for storing characters
+                            //Pool pool = new();
 
-                            //already at FirstName, find and save it
-                            FindString(reader, "StrProperty");
-                            soldier.FirstName = ReadData(reader);
-                            
-                            //then LastName
-                            FindString(reader, "strLastName");
-                            FindString(reader, "StrProperty");
-                            soldier.LastName = ReadData(reader);
-                            
-                            //then NickName
-                            FindString(reader, "strNickName");
-                            FindString(reader, "StrProperty");
-                            soldier.NickName = ReadData(reader);
-                            
-                            //then SoldierClass
-                            FindString(reader, "ClassTemplateName");
-                            FindString(reader, "NameProperty");
-                            soldier.SoldierClass = ReadData(reader);
+                            //each soldier has one instance of "strFirstName", so use this as separating point
+                            int nextSoldier = FindString(reader, "strFirstName");
 
-                            //then Gender
-                            FindString(reader, "iGender");
-                            FindString(reader, "IntProperty");
-                            soldier.Gender = ReadGender(reader);
+                            //when nextSoldier returns 1 we've ran out of stuff in the bin
+                            while (nextSoldier != 1)
+                            {
+                                Soldier soldier = new();
 
-                            //then finally Nationality
-                            FindString(reader, "nmFlag");
-                            FindString(reader, "NameProperty");
-                            soldier.Nationality = ReadData(reader);
+                                //already at FirstName, find and save it
+                                FindString(reader, "StrProperty");
+                                soldier.FirstName = ReadData(reader);
 
-                            //add soldier to pool and check if there's still a soldier to do
-                            pool.AddSoldier(soldier);
-                            nextSoldier = FindString(reader, "strFirstName");
+                                //then LastName
+                                FindString(reader, "strLastName");
+                                FindString(reader, "StrProperty");
+                                soldier.LastName = ReadData(reader);
+
+                                //then NickName
+                                FindString(reader, "strNickName");
+                                FindString(reader, "StrProperty");
+                                soldier.NickName = ReadData(reader);
+
+                                //then SoldierClass
+                                FindString(reader, "ClassTemplateName");
+                                FindString(reader, "NameProperty");
+                                soldier.SoldierClass = ReadData(reader);
+
+                                //then Gender
+                                FindString(reader, "iGender");
+                                FindString(reader, "IntProperty");
+                                soldier.Gender = ReadGender(reader);
+
+                                //then finally Nationality
+                                FindString(reader, "nmFlag");
+                                FindString(reader, "NameProperty");
+                                soldier.Nationality = ReadData(reader);
+
+                                //add soldier to pool and check if there's still a soldier to do
+                                pool.AddSoldier(soldier);
+                                nextSoldier = FindString(reader, "strFirstName");
+                            }
+
+                            //print the pool baby
+                            //pool.PrintPool();
+
+                            //TESTING TIME: PRINT POOL TO FILE
+                            //pool.PrintPoolToFile(path);
+
+                            //for now, this is bunk newline code that exists because my ass doesn't want to get doxxed by the end-of-console info
+                            //Console.Write("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
                         }
-
-                        //print the pool baby
-                        pool.PrintPool();
-
-                        //TESTING TIME: PRINT POOL TO FILE
-                        pool.PrintPoolToFile("Siph_Julijana_Milena.txt");
-
-                        //for now, this is bunk newline code that exists because my ass doesn't want to get doxxed by the end-of-console info
-                        Console.Write("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
                     }
-                }
-            }
 
-            //the file does not exist; throw up an error message
-            else
-            {
-                Console.WriteLine("ERROR: The file you have specified does not exist.");
-                Console.ReadLine();
+                    pool.PrintPoolToFile(path);
+                }
+
+                //the file does not exist; throw up an error message
+                else
+                {
+                    Console.WriteLine("ERROR: The file you have specified does not exist.");
+                    Console.ReadLine();
+                }
             }
         }
 
