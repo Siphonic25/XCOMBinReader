@@ -1,36 +1,21 @@
-﻿using System.Reflection;
-using System.Text;
+﻿using System.Text;
 
 namespace BinReader
 {
     internal class Program
     {
-        /*list of goals:
-         * Step 1: Be able to read and reoutput a .bin file (Complete)
-         * Step 2: Output personal information into a nice table format
-         * Step 3: Output this information into a .txt file
-         * Step 4: exeify this
-         * (the goal is an .exe where you run it in a folder with .bin files, and it returns .txtified versions of all of them)
-         */
         private static void Main(string[] args)
         {
-            //get the file name
-            //for now it's a const but will need to be a full variable later, that the user enters
-            //const string fileName = "Siph_A_Lotta_Weasels.bin";
-            //const string fileName = "Siph_Julijana_Milena.bin";
-
             //get all of the possible valid file names (i.e. any file in this folder that ends in .bin)
-            //string fileFolder  = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            //Console.WriteLine(fileFolder);
             string[] filePaths = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.bin");
             
-
             //for every valid .bin file we have found
             foreach (string path in filePaths)
             {
                 //if the file in question exists
                 if (File.Exists(path))
                 {
+                    //pool to store soldiers
                     Pool pool = new();
 
                     //open the file
@@ -39,15 +24,13 @@ namespace BinReader
                         //open a BinaryReader for the file
                         using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, false))
                         {
-                            //pool for storing characters
-                            //Pool pool = new();
-
                             //each soldier has one instance of "strFirstName", so use this as separating point
                             int nextSoldier = FindString(reader, "strFirstName");
 
                             //when nextSoldier returns 1 we've ran out of stuff in the bin
                             while (nextSoldier != 1)
                             {
+                                //to store soldier details in
                                 Soldier soldier = new();
 
                                 //already at FirstName, find and save it
@@ -83,18 +66,10 @@ namespace BinReader
                                 pool.AddSoldier(soldier);
                                 nextSoldier = FindString(reader, "strFirstName");
                             }
-
-                            //print the pool baby
-                            //pool.PrintPool();
-
-                            //TESTING TIME: PRINT POOL TO FILE
-                            //pool.PrintPoolToFile(path);
-
-                            //for now, this is bunk newline code that exists because my ass doesn't want to get doxxed by the end-of-console info
-                            //Console.Write("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
                         }
                     }
 
+                    //save the now-completed pool
                     pool.PrintPoolToFile(path);
                 }
 
@@ -134,23 +109,20 @@ namespace BinReader
                         else if (nextChar == 2) { return "Female"; }
 
                         //else oops
-                        else { return "Error"; }
+                        else { return "ERROR"; }
                     }
                 }
 
                 //there are no more characters available; we've hit end-of-file (oops).
-                else if (nextChar == -1)
-                {
-                    return "ERROR";
-                }
+                else if (nextChar == -1) { return "ERROR"; }
 
                 //consume a character to keep progressing
                 reader.ReadChar();
             }
         }
 
-        /* skip all characters lower than the lowest valid ASCII character (i.e. '!')
-         * then once a workable character is hit, keep going until first non-valid character, then return the read data
+        /* skip all characters lower than the lowest printable ASCII character (i.e. '!')
+         * then once a workable character is hit, keep going until first non-workable character, then return the read data
          */
         private static string ReadData(BinaryReader reader)
         {
@@ -162,16 +134,16 @@ namespace BinReader
                 //pull the next character
                 int nextChar = reader.ReadByte();
 
-                //if it's greater than the lowest value of a valid UTF-8 code (i.e. at or higher than 32);
+                //if it's greater than the lowest value
                 if (nextChar >= minVal)
                 {
+                    //list of chars (we'll convert to string later)
                     List<char> chars = [];
 
                     while (nextChar >= minVal)
                     {
-                        //add the read character
+                        //add the read character and read the next one
                         chars.Add(Convert.ToChar(nextChar));
-                        //read the next one
                         nextChar = reader.ReadByte();
                     }
 
