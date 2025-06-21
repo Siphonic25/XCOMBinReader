@@ -8,14 +8,11 @@ namespace BinReader
         {
             //get all of the possible valid file names (i.e. any file in this folder that ends in .bin)
             string[] filePaths = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.bin");
-            
-            //for every valid .bin file we have found
+
             foreach (string path in filePaths)
             {
-                //if the file in question exists
                 if (File.Exists(path))
                 {
-                    //pool to store soldiers
                     Pool pool = new();
 
                     //open the file
@@ -30,34 +27,29 @@ namespace BinReader
                             //when nextSoldier returns 1 we've ran out of stuff in the bin
                             while (nextSoldier != 1)
                             {
-                                //to store soldier details in
+                                //construct a soldier and fill its information
                                 Soldier soldier = new();
 
-                                //already at FirstName, find and save it
+                                //values are saved after an instance of [Str/Name/Int]Property
                                 FindString(reader, "StrProperty");
                                 soldier.FirstName = ReadData(reader);
 
-                                //then LastName
                                 FindString(reader, "strLastName");
                                 FindString(reader, "StrProperty");
                                 soldier.LastName = ReadData(reader);
 
-                                //then NickName
                                 FindString(reader, "strNickName");
                                 FindString(reader, "StrProperty");
                                 soldier.NickName = ReadData(reader);
 
-                                //then SoldierClass
                                 FindString(reader, "ClassTemplateName");
                                 FindString(reader, "NameProperty");
                                 soldier.SoldierClass = ReadData(reader);
 
-                                //then Gender
                                 FindString(reader, "iGender");
                                 FindString(reader, "IntProperty");
                                 soldier.Gender = ReadGender(reader);
 
-                                //then finally Nationality
                                 FindString(reader, "nmFlag");
                                 FindString(reader, "NameProperty");
                                 soldier.Nationality = ReadData(reader);
@@ -69,7 +61,7 @@ namespace BinReader
                         }
                     }
 
-                    //save the now-completed pool
+                    //save the now-completed pool to file
                     pool.PrintPoolToFile(path);
                 }
 
@@ -82,7 +74,8 @@ namespace BinReader
             }
         }
 
-        /* designed just for reading gender: reads until the *second* piece of non-zero data, and grabs it
+        /* Designed just for reading gender: reads until the *second* piece of non-zero data, and grabs it
+         * (this is because gender has a nonzero piece of data prior to the gender marker, breaking ReadData)
          * if 1, it returns "Male", if 0, it returns "Female", else it returns "ERROR"
          */
         private static string ReadGender(BinaryReader reader)
@@ -102,13 +95,8 @@ namespace BinReader
                     //if counter is now 2, we're on our second bit of data, so nextChar is our desired data
                     if (counter == 2)
                     {
-                        //if 1, male
                         if (nextChar == 1) { return "Male"; }
-
-                        //else if 2, female
                         else if (nextChar == 2) { return "Female"; }
-
-                        //else oops
                         else { return "ERROR"; }
                     }
                 }
@@ -122,7 +110,7 @@ namespace BinReader
         }
 
         /* skip all characters lower than the lowest printable ASCII character (i.e. '!')
-         * then once a workable character is hit, keep going until first non-workable character, then return the read data
+         * then once a printable character is hit, keep reading until first non-printable character, then return the read data
          */
         private static string ReadData(BinaryReader reader)
         {
@@ -134,7 +122,6 @@ namespace BinReader
                 //pull the next character
                 int nextChar = reader.ReadByte();
 
-                //if it's greater than the lowest value
                 if (nextChar >= minVal)
                 {
                     //list of chars (we'll convert to string later)
@@ -143,6 +130,7 @@ namespace BinReader
                     while (nextChar >= minVal)
                     {
                         //add the read character and read the next one
+                        //ReadByte is used because ReadChar occasionally shits itself
                         chars.Add(Convert.ToChar(nextChar));
                         nextChar = reader.ReadByte();
                     }
@@ -158,7 +146,7 @@ namespace BinReader
         }
 
         /* reads until a specific string has been located in the file
-         * returns 0 if the string has been found and 1 if we've hit end-of-file
+         * returns 0 if the string has been found and read, 1 if we've hit end-of-file
          */
         private static int FindString(BinaryReader reader, string str)
         {

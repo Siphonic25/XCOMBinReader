@@ -1,25 +1,33 @@
 namespace BinReader
 {
-    //a representation of the entire pool containing all of its soldiers
+    /// <summary>
+    /// A representation of the entire character pool and all its contents.
+    /// </summary>
     public class Pool
     {
-        private List<Soldier> soldiers = [];    //list of all the soldiers in the pool
+        /// <value>
+        /// A list of all the Soldiers in the pool
+        /// </value>
+        private List<Soldier> soldiers = [];
 
-
-        //adds a soldier to the Pool's list
+        /// <summary>
+        /// Does exactly what it says on the tin (adds a Soldier to the soldiers list).
+        /// </summary>
+        /// <param name="soldier">The Soldier object to add.</param>
         public void AddSoldier(Soldier soldier)
         {
             soldiers.Add(soldier);
         }
 
-
-        //prints the pool to the console, mainly used for debugging the actual printing process
-        //except for file handling, is otherwise identical to PrintPoolToFile
+        /// <summary>
+        /// Formats and prints the pool's contents to the console. Mainly used for debugging the printing process,
+        /// as printing logic is otherwise identical to PrintPoolToConsole()
+        /// </summary>
         public void PrintPoolToConsole()
         {
             Console.WriteLine("FIRST NAME | LAST NAME |  NICKNAME   |   CLASS   |GENDER|  NATIONALITY  ");
             Console.WriteLine("-----------|-----------|-------------|-----------|------|---------------");
-            
+
             foreach (Soldier soldier in soldiers)
             {
                 Console.WriteLine(soldier.FirstName.PadRight(11) + "|"
@@ -31,16 +39,21 @@ namespace BinReader
             }
         }
 
-        //as above, but prints to a newly created text file with the given name
+        /// <summary>
+        /// Formats and prints the pool's contents to a given file.
+        /// </summary>
+        /// <param name="file">File path of the .bin file to read. If it currently doesn't exist, it is created.</param>
         public void PrintPoolToFile(string file)
         {
+            ///This function performs editing on the file name. Feel that this isn't the function's job.///
+
             //trim the file path so it points to a .txt instead of a .bin
             string filePath = file.Remove(file.Length - 3, 3) + "txt";
 
             //if the file does exist, kill it (sorry file)
             if (File.Exists(filePath)) { File.Delete(filePath); }
 
-            //create file
+            //create and open file
             using (FileStream fs = File.Create(filePath))
             {
                 //create StreamWriter for it
@@ -48,7 +61,7 @@ namespace BinReader
                 {
                     sw.WriteLine("FIRST NAME | LAST NAME |  NICKNAME   |   CLASS   |GENDER|  NATIONALITY  ");
                     sw.WriteLine("-----------|-----------|-------------|-----------|------|---------------");
-                    
+
                     foreach (Soldier soldier in soldiers)
                     {
                         sw.WriteLine(soldier.FirstName.PadRight(11) + "|"

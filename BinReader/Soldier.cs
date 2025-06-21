@@ -1,6 +1,8 @@
 ﻿namespace BinReader
 {
-    //contains all of a soldier's information for easy printing
+    /// <summary>
+    /// A representation of the information of a Soldier in XCOM 2.
+    /// </summary>
     public class Soldier
     {
         private string firstName = "";      //soldier's first name
@@ -9,15 +11,13 @@
         private string soldierClass = "";   //soldier's class
         private string gender = "";         //soldier's gender
         private string nationality = "";    //soldier's nationality
-                                            //private string[] bio;             //I have no idea how to do bios right now
+        //private string[] bio;             //I have no idea how to do bios right now
 
-
-        //getters and setters baby
-        //we all love some getters and setters
+        //getters and setters baby, we all love some getters and setters
         //god I love Properties
         public string FirstName
         {
-            get { return firstName; } 
+            get { return firstName; }
             set { firstName = value; }
         }
 
