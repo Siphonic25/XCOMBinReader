@@ -7,11 +7,11 @@
     {
         private string firstName = "";      //soldier's first name
         private string lastName = "";       //soldier's last name
-        private string nickName = "";       //soldier's callsign (lmao the spelling)
+        private string nickName = "";       //soldier's callsign (it's spelled this way in the bin file don't @ me)
         private string soldierClass = "";   //soldier's class
         private string gender = "";         //soldier's gender
         private string nationality = "";    //soldier's nationality
-        //private string[] bio;             //I have no idea how to do bios right now
+        //private string[] bio;             //soldier's bio (I have no idea how to do bios right now)
 
         //getters and setters baby, we all love some getters and setters
         //god I love Properties

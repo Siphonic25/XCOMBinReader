@@ -30,13 +30,13 @@
         {
             SuspendLayout();
             // 
-            // Form1
+            // HomeScreen
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Name = "Form1";
-            Text = "Form1";
+            ClientSize = new Size(942, 493);
+            Name = "HomeScreen";
+            Text = "Bin Reader";
             Load += Form1_Load;
             ResumeLayout(false);
         }
