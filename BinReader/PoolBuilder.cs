@@ -2,75 +2,79 @@
 
 namespace BinReader
 {
+    //class for the purposes of constructing a Pool from a .bin file
+    //depending on complexity, might merge this with the Pool class itself
     internal class PoolBuilder
     {
-        private static void Main(string[] args)
+        private Pool pool = new();  //the pool we are constructing
+        private string filePath;    //the path of the .bin file the Poolbuilder is building from
+
+        public PoolBuilder(string filePath)
         {
-            //get all of the possible valid file names (i.e. any file in this folder that ends in .bin)
-            string[] filePaths = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.bin");
+            this.filePath = filePath;
+        }
 
-            foreach (string path in filePaths)
+        //construct the pool from the provided file
+        public void BuildPoolFromFile()
+        {
+            //check if the provided file is alive
+            if (File.Exists(filePath))
             {
-                if (File.Exists(path))
+                //reinitialise the pool to ensure it's clear
+                pool = new();
+
+                //open the file
+                using (FileStream stream = File.Open(filePath, FileMode.Open))
                 {
-                    Pool pool = new();
-
-                    //open the file
-                    using (FileStream stream = File.Open(path, FileMode.Open))
+                    //open a BinaryReader for the file
+                    using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, false))
                     {
-                        //open a BinaryReader for the file
-                        using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, false))
+                        //each soldier has one instance of "strFirstName", so use this as separating point
+                        int nextSoldier = FindString(reader, "strFirstName");
+
+                        //when nextSoldier returns 1 we've ran out of stuff in the bin
+                        while (nextSoldier != 1)
                         {
-                            //each soldier has one instance of "strFirstName", so use this as separating point
-                            int nextSoldier = FindString(reader, "strFirstName");
+                            //construct a soldier and fill its information
+                            Soldier soldier = new();
 
-                            //when nextSoldier returns 1 we've ran out of stuff in the bin
-                            while (nextSoldier != 1)
-                            {
-                                //construct a soldier and fill its information
-                                Soldier soldier = new();
+                            //values are saved after an instance of [Str/Name/Int]Property
+                            FindString(reader, "StrProperty");
+                            soldier.FirstName = ReadData(reader);
 
-                                //values are saved after an instance of [Str/Name/Int]Property
-                                FindString(reader, "StrProperty");
-                                soldier.FirstName = ReadData(reader);
+                            FindString(reader, "strLastName");
+                            FindString(reader, "StrProperty");
+                            soldier.LastName = ReadData(reader);
 
-                                FindString(reader, "strLastName");
-                                FindString(reader, "StrProperty");
-                                soldier.LastName = ReadData(reader);
+                            FindString(reader, "strNickName");
+                            FindString(reader, "StrProperty");
+                            soldier.NickName = ReadData(reader);
 
-                                FindString(reader, "strNickName");
-                                FindString(reader, "StrProperty");
-                                soldier.NickName = ReadData(reader);
+                            FindString(reader, "ClassTemplateName");
+                            FindString(reader, "NameProperty");
+                            soldier.SoldierClass = ReadData(reader);
 
-                                FindString(reader, "ClassTemplateName");
-                                FindString(reader, "NameProperty");
-                                soldier.SoldierClass = ReadData(reader);
+                            FindString(reader, "iGender");
+                            FindString(reader, "IntProperty");
+                            soldier.Gender = ReadGender(reader);
 
-                                FindString(reader, "iGender");
-                                FindString(reader, "IntProperty");
-                                soldier.Gender = ReadGender(reader);
+                            FindString(reader, "nmFlag");
+                            FindString(reader, "NameProperty");
+                            soldier.Nationality = ReadData(reader);
 
-                                FindString(reader, "nmFlag");
-                                FindString(reader, "NameProperty");
-                                soldier.Nationality = ReadData(reader);
-
-                                //add soldier to pool and check if there's still a soldier to do
-                                pool.AddSoldier(soldier);
-                                nextSoldier = FindString(reader, "strFirstName");
-                            }
+                            //add soldier to pool and check if there's still a soldier to do
+                            pool.AddSoldier(soldier);
+                            nextSoldier = FindString(reader, "strFirstName");
                         }
                     }
-
-                    //save the now-completed pool to file
-                    pool.PrintPoolToFile(path);
                 }
+                //initialisation complete
+            }
 
-                //the file does not exist; throw up an error message
-                else
-                {
-                    Console.WriteLine("ERROR: The file you have specified does not exist.");
-                    Console.ReadLine();
-                }
+            //the file does not exist; throw up an error message
+            else
+            {
+                Console.WriteLine("ERROR: The file you have specified does not exist.");
             }
         }
 
