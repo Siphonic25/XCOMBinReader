@@ -1,14 +1,14 @@
-﻿namespace BinReader
+﻿namespace BinReader.Forms
 {
-    partial class HomeScreen
+    partial class ErrorScreen
     {
         /// <summary>
-        ///  Required designer variable.
+        /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
-        ///  Clean up any resources being used.
+        /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
@@ -23,39 +23,23 @@
         #region Windows Form Designer generated code
 
         /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
-            Label_Home = new Label();
             SuspendLayout();
             // 
-            // Label_Home
-            // 
-            Label_Home.Anchor = AnchorStyles.Top;
-            Label_Home.AutoSize = true;
-            Label_Home.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Label_Home.Location = new Point(324, 9);
-            Label_Home.Name = "Label_Home";
-            Label_Home.Size = new Size(285, 46);
-            Label_Home.TabIndex = 0;
-            Label_Home.Text = "XCOM Bin Reader";
-            // 
-            // HomeScreen
+            // ErrorScreen
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(942, 493);
-            Controls.Add(Label_Home);
-            Name = "HomeScreen";
+            Name = "ErrorScreen";
             Text = "Bin Reader";
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-
-        private Label Label_Home;
     }
 }
