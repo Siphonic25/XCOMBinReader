@@ -4,7 +4,7 @@ namespace BinReader
 {
     //class for the purposes of constructing a Pool from a .bin file
     //depending on complexity, might merge this with the Pool class itself
-    internal class PoolBuilder
+    public class PoolBuilder
     {
         private Pool pool = new();  //the pool we are constructing
         private string filePath;    //the path of the .bin file the Poolbuilder is building from
