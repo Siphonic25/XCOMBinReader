@@ -28,34 +28,40 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Label_Home = new Label();
+            ofdBin = new OpenFileDialog();
+            buttonBin = new Button();
             SuspendLayout();
             // 
-            // Label_Home
+            // ofdBin
             // 
-            Label_Home.Anchor = AnchorStyles.Top;
-            Label_Home.AutoSize = true;
-            Label_Home.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Label_Home.Location = new Point(324, 9);
-            Label_Home.Name = "Label_Home";
-            Label_Home.Size = new Size(285, 46);
-            Label_Home.TabIndex = 0;
-            Label_Home.Text = "XCOM Bin Reader";
+            ofdBin.FileName = "Select a bin file";
+            ofdBin.Filter = "XCOM Bin files (*.bin)|*.bin";
+            ofdBin.Title = "Open bin file";
+            // 
+            // buttonBin
+            // 
+            buttonBin.Location = new Point(12, 12);
+            buttonBin.Name = "buttonBin";
+            buttonBin.Size = new Size(139, 29);
+            buttonBin.TabIndex = 0;
+            buttonBin.Text = "Select A Bin File";
+            buttonBin.UseVisualStyleBackColor = true;
+            buttonBin.Click += buttonBin_Click;
             // 
             // HomeScreen
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(942, 493);
-            Controls.Add(Label_Home);
+            Controls.Add(buttonBin);
             Name = "HomeScreen";
             Text = "Bin Reader";
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
-        private Label Label_Home;
+        private OpenFileDialog ofdBin;
+        private Button buttonBin;
     }
 }
