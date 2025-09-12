@@ -6,32 +6,35 @@ namespace BinReader
     //depending on complexity, might merge this with the Pool class itself
     public class PoolBuilder
     {
-        private Pool pool = new();  //the pool we are constructing
-        private string filePath;    //the path of the .bin file the Poolbuilder is building from
+        private List<Soldier> pool = [];    //the list of soldiers pulled from the pool
+        private string filePath;            //the path of the .bin file the Poolbuilder is building from
 
+
+        //Constructors: can build one with or without the filePath initialised
         public PoolBuilder()
         {
             filePath = string.Empty;
         }
 
-        //can also just assign a filePath directly
         public PoolBuilder(string filePath)
         {
             this.filePath = filePath;
         }
 
-        //property for the filePath
+
+        //Properties
         public string FilePath
         {
             get { return filePath; }
             set { filePath = value; }
         }
 
-        //return the list of soldiers
-        public List<Soldier> fetchSoldiers()
+        public List<Soldier> Pool
         {
-            return pool.Soldiers;
+            get { return pool; }
         }
+
+        //Functions
 
         //construct the pool from the provided file
         public void BuildPoolFromFile()
@@ -40,13 +43,13 @@ namespace BinReader
             if (File.Exists(filePath))
             {
                 //reinitialise the pool to ensure it's clear
-                pool = new();
+                pool = [];
 
                 //open the file
                 using (FileStream stream = File.Open(filePath, FileMode.Open))
                 {
                     //open a BinaryReader for the file
-                    using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, false))
+                    using (BinaryReader reader = new(stream, Encoding.UTF8, false))
                     {
                         //each soldier has one instance of "strFirstName", so use this as separating point
                         int nextSoldier = FindString(reader, "strFirstName");
@@ -82,12 +85,11 @@ namespace BinReader
                             soldier.Nationality = ReadData(reader);
 
                             //add soldier to pool and check if there's still a soldier to do
-                            pool.AddSoldier(soldier);
+                            pool.Add(soldier);
                             nextSoldier = FindString(reader, "strFirstName");
                         }
                     }
                 }
-                //initialisation complete
             }
 
             //the file does not exist; throw up an error message

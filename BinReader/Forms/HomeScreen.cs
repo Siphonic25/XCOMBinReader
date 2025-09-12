@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Security;
 
 namespace BinReader
@@ -56,7 +55,7 @@ namespace BinReader
             dgvPool.Visible = true;
 
             //add each soldier to the DGV
-            foreach (Soldier soldier in poolBuilder.fetchSoldiers())
+            foreach (Soldier soldier in poolBuilder.Pool)
             {
                 dgvPool.Rows.Add(soldier.SoldierToArray());
             }
