@@ -9,9 +9,28 @@ namespace BinReader
         private Pool pool = new();  //the pool we are constructing
         private string filePath;    //the path of the .bin file the Poolbuilder is building from
 
+        public PoolBuilder()
+        {
+            filePath = string.Empty;
+        }
+
+        //can also just assign a filePath directly
         public PoolBuilder(string filePath)
         {
             this.filePath = filePath;
+        }
+
+        //property for the filePath
+        public string FilePath
+        {
+            get { return filePath; }
+            set { filePath = value; }
+        }
+
+        //return the list of soldiers
+        public List<Soldier> fetchSoldiers()
+        {
+            return pool.Soldiers;
         }
 
         //construct the pool from the provided file

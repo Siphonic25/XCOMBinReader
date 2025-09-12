@@ -50,5 +50,13 @@
             get { return nationality; }
             set { nationality = value; }
         }
+
+        //constructs and returns a list of the soldier's property
+        public string[] SoldierToArray()
+        {
+            ///flagging this for future me, if something borks it might be this thing
+            string[] soldierArray = [firstName, lastName, nickName, soldierClass, gender, nationality];
+            return soldierArray;
+        }
     }
 }

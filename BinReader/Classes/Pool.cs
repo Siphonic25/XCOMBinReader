@@ -5,10 +5,21 @@ namespace BinReader
     /// </summary>
     public class Pool
     {
+        //you know what, I don't think this class is doing anything meaningful now
+        //could merge it into PoolBuilder and replace all instances of it with List<Soldier>
+
+
         /// <value>
         /// A list of all the Soldiers in the pool
         /// </value>
         private List<Soldier> soldiers = [];
+
+        //fetching the list of soldiers
+        public List<Soldier> Soldiers
+        {
+            get { return soldiers; }
+        }
+
 
         /// <summary>
         /// Does exactly what it says on the tin (adds a Soldier to the soldiers list).
