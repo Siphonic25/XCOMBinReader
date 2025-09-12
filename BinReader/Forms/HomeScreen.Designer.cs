@@ -30,6 +30,14 @@
         {
             ofdBin = new OpenFileDialog();
             buttonBin = new Button();
+            dgvPool = new DataGridView();
+            firstName = new DataGridViewTextBoxColumn();
+            lastName = new DataGridViewTextBoxColumn();
+            nickName = new DataGridViewTextBoxColumn();
+            soldierClass = new DataGridViewTextBoxColumn();
+            gender = new DataGridViewTextBoxColumn();
+            nationality = new DataGridViewTextBoxColumn();
+            ((System.ComponentModel.ISupportInitialize)dgvPool).BeginInit();
             SuspendLayout();
             // 
             // ofdBin
@@ -48,14 +56,78 @@
             buttonBin.UseVisualStyleBackColor = true;
             buttonBin.Click += buttonBin_Click;
             // 
+            // dgvPool
+            // 
+            dgvPool.AllowUserToAddRows = false;
+            dgvPool.AllowUserToDeleteRows = false;
+            dgvPool.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvPool.Columns.AddRange(new DataGridViewColumn[] { firstName, lastName, nickName, soldierClass, gender, nationality });
+            dgvPool.Location = new Point(12, 61);
+            dgvPool.Name = "dgvPool";
+            dgvPool.ReadOnly = true;
+            dgvPool.RowHeadersWidth = 51;
+            dgvPool.Size = new Size(918, 377);
+            dgvPool.TabIndex = 1;
+            dgvPool.Visible = false;
+            // 
+            // firstName
+            // 
+            firstName.HeaderText = "First Name";
+            firstName.MinimumWidth = 6;
+            firstName.Name = "firstName";
+            firstName.ReadOnly = true;
+            firstName.Width = 125;
+            // 
+            // lastName
+            // 
+            lastName.HeaderText = "Last Name";
+            lastName.MinimumWidth = 6;
+            lastName.Name = "lastName";
+            lastName.ReadOnly = true;
+            lastName.Width = 125;
+            // 
+            // nickName
+            // 
+            nickName.HeaderText = "Callsign";
+            nickName.MinimumWidth = 6;
+            nickName.Name = "nickName";
+            nickName.ReadOnly = true;
+            nickName.Width = 125;
+            // 
+            // soldierClass
+            // 
+            soldierClass.HeaderText = "Class";
+            soldierClass.MinimumWidth = 6;
+            soldierClass.Name = "soldierClass";
+            soldierClass.ReadOnly = true;
+            soldierClass.Width = 125;
+            // 
+            // gender
+            // 
+            gender.HeaderText = "Gender";
+            gender.MinimumWidth = 6;
+            gender.Name = "gender";
+            gender.ReadOnly = true;
+            gender.Width = 125;
+            // 
+            // nationality
+            // 
+            nationality.HeaderText = "Nationality";
+            nationality.MinimumWidth = 6;
+            nationality.Name = "nationality";
+            nationality.ReadOnly = true;
+            nationality.Width = 125;
+            // 
             // HomeScreen
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(942, 493);
+            Controls.Add(dgvPool);
             Controls.Add(buttonBin);
             Name = "HomeScreen";
             Text = "Bin Reader";
+            ((System.ComponentModel.ISupportInitialize)dgvPool).EndInit();
             ResumeLayout(false);
         }
 
@@ -63,5 +135,12 @@
 
         private OpenFileDialog ofdBin;
         private Button buttonBin;
+        private DataGridView dgvPool;
+        private DataGridViewTextBoxColumn firstName;
+        private DataGridViewTextBoxColumn lastName;
+        private DataGridViewTextBoxColumn nickName;
+        private DataGridViewTextBoxColumn soldierClass;
+        private DataGridViewTextBoxColumn gender;
+        private DataGridViewTextBoxColumn nationality;
     }
 }
