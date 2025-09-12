@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using System.Security;
-using System.Windows.Forms;
 
 namespace BinReader
 {
