@@ -10,28 +10,9 @@ namespace BinReader
         //VARIABLES//
 
         private List<Soldier> pool = [];    //the list of soldiers pulled from the pool
-        private string filePath;            //the path of the .bin file the Poolbuilder is building from
-
-
-        //CONSTRUCTORS//
-
-        public PoolBuilder()
-        {
-            filePath = string.Empty;
-        }
-
-        public PoolBuilder(string filePath)
-        {
-            this.filePath = filePath;
-        }
 
 
         //PROPERTIES//
-        public string FilePath
-        {
-            get { return filePath; }
-            set { filePath = value; }
-        }
 
         public List<Soldier> Pool
         {
@@ -44,7 +25,8 @@ namespace BinReader
         /// <summary>
         /// Construct the pool from the provided file.
         /// </summary>
-        public void BuildPoolFromFile()
+        /// <param name="filePath">The path of the file to build a pool from.</param>
+        public void BuildPoolFromFile(string filePath)
         {
             //check if the provided file is alive
             if (File.Exists(filePath))

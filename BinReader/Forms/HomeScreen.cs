@@ -28,17 +28,11 @@ namespace BinReader
             {
                 try
                 {
-                    var filePath = ofdBin.FileName;
+                    //build from pool and populate DGV
 
-                    //file handling is currently handled by PoolBuilder.BuildPoolFromFile()
-                    //might move it over to here
-                    //using (Stream str = ofdBin.OpenFile())
-                    //{
-                        //build from pool and populate DGV
-                        poolBuilder.FilePath = filePath;
-                        poolBuilder.BuildPoolFromFile();
-                        PopulateDataGridView();
-                    //}
+                    var filePath = ofdBin.FileName;
+                    poolBuilder.BuildPoolFromFile(filePath);
+                    PopulateDataGridView();
                 }
 
                 //something's gone wrong; error handling
