@@ -29,7 +29,6 @@ namespace BinReader
                 try
                 {
                     //build from pool and populate DGV
-
                     var filePath = ofdBin.FileName;
                     poolBuilder.BuildPoolFromFile(filePath);
                     PopulateDataGridView();
