@@ -37,6 +37,8 @@
             soldierClass = new DataGridViewTextBoxColumn();
             gender = new DataGridViewTextBoxColumn();
             nationality = new DataGridViewTextBoxColumn();
+            buttonSave = new Button();
+            sfdbin = new SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)dgvPool).BeginInit();
             SuspendLayout();
             // 
@@ -60,6 +62,7 @@
             // 
             dgvPool.AllowUserToAddRows = false;
             dgvPool.AllowUserToDeleteRows = false;
+            dgvPool.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvPool.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvPool.Columns.AddRange(new DataGridViewColumn[] { firstName, lastName, nickName, soldierClass, gender, nationality });
             dgvPool.Location = new Point(12, 61);
@@ -76,7 +79,7 @@
             firstName.MinimumWidth = 6;
             firstName.Name = "firstName";
             firstName.ReadOnly = true;
-            firstName.Width = 125;
+            firstName.Width = 109;
             // 
             // lastName
             // 
@@ -84,7 +87,7 @@
             lastName.MinimumWidth = 6;
             lastName.Name = "lastName";
             lastName.ReadOnly = true;
-            lastName.Width = 125;
+            lastName.Width = 108;
             // 
             // nickName
             // 
@@ -92,7 +95,7 @@
             nickName.MinimumWidth = 6;
             nickName.Name = "nickName";
             nickName.ReadOnly = true;
-            nickName.Width = 125;
+            nickName.Width = 90;
             // 
             // soldierClass
             // 
@@ -100,7 +103,7 @@
             soldierClass.MinimumWidth = 6;
             soldierClass.Name = "soldierClass";
             soldierClass.ReadOnly = true;
-            soldierClass.Width = 125;
+            soldierClass.Width = 71;
             // 
             // gender
             // 
@@ -108,7 +111,7 @@
             gender.MinimumWidth = 6;
             gender.Name = "gender";
             gender.ReadOnly = true;
-            gender.Width = 125;
+            gender.Width = 86;
             // 
             // nationality
             // 
@@ -116,13 +119,32 @@
             nationality.MinimumWidth = 6;
             nationality.Name = "nationality";
             nationality.ReadOnly = true;
-            nationality.Width = 125;
+            nationality.Width = 111;
+            // 
+            // buttonSave
+            // 
+            buttonSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonSave.Location = new Point(12, 452);
+            buttonSave.Name = "buttonSave";
+            buttonSave.Size = new Size(105, 29);
+            buttonSave.TabIndex = 2;
+            buttonSave.Text = "Save to Disk";
+            buttonSave.UseVisualStyleBackColor = true;
+            buttonSave.Visible = false;
+            buttonSave.Click += buttonSave_Click;
+            // 
+            // sfdbin
+            // 
+            sfdbin.DefaultExt = "csv";
+            sfdbin.FileName = "Pool.csv";
+            sfdbin.Filter = "Spreadsheet (*.csv)|*.csv";
             // 
             // HomeScreen
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(942, 493);
+            Controls.Add(buttonSave);
             Controls.Add(dgvPool);
             Controls.Add(buttonBin);
             Name = "HomeScreen";
@@ -142,5 +164,7 @@
         private DataGridViewTextBoxColumn soldierClass;
         private DataGridViewTextBoxColumn gender;
         private DataGridViewTextBoxColumn nationality;
+        private Button buttonSave;
+        private SaveFileDialog sfdbin;
     }
 }
