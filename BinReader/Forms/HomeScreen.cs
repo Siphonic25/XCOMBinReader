@@ -4,14 +4,23 @@ namespace BinReader
 {
     public partial class HomeScreen : Form
     {
-        PoolBuilder poolBuilder = new();    //setting up a PoolBuilder for handling the provided file.
+        /// <summary>
+        /// The PoolBuilder that handles the file selected by the user.
+        /// </summary>
+        PoolBuilder poolBuilder = new();
+
 
         public HomeScreen()
         {
             InitializeComponent();
         }
 
-        //roughly covers the opening and selection of a .bin file
+
+        /// <summary>
+        /// Covers selecting the .bin file and processing its contents.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonBin_Click(object sender, EventArgs e)
         {
             //try and open the file selected
@@ -21,17 +30,13 @@ namespace BinReader
                 {
                     var filePath = ofdBin.FileName;
 
-                    //I'm already doing this in the PoolBuilder file lmao
-                    //this is what I get for code retrofitting like crazy
-                    //the job of correcting this tech debt will be left as an exercise to the reader
+                    //file handling is currently handled by PoolBuilder.BuildPoolFromFile()
+                    //might move it over to here
                     //using (Stream str = ofdBin.OpenFile())
                     //{
-                        //this is where all the processing of the file needs to take place
-                        //start by assigning it to the PoolBuilder and building from there
+                        //build from pool and populate DGV
                         poolBuilder.FilePath = filePath;
                         poolBuilder.BuildPoolFromFile();
-
-                        //populate the DataGridView
                         PopulateDataGridView();
                     //}
                 }
@@ -45,7 +50,9 @@ namespace BinReader
             }
         }
 
-        //does exactly what it says on the tin.
+        /// <summary>
+        /// Does exactly what it says on the tin. Populates the DGV with the contents of the PoolBuilder.
+        /// </summary>
         private void PopulateDataGridView()
         {
             //wipe the DGV if it isn't empty already

@@ -2,15 +2,19 @@
 
 namespace BinReader
 {
-    //class for the purposes of constructing a Pool from a .bin file
-    //depending on complexity, might merge this with the Pool class itself
+    /// <summary>
+    /// Class for the purposes of constructing a Pool from a .bin file.
+    /// </summary>
     public class PoolBuilder
     {
+        //VARIABLES//
+
         private List<Soldier> pool = [];    //the list of soldiers pulled from the pool
         private string filePath;            //the path of the .bin file the Poolbuilder is building from
 
 
-        //Constructors: can build one with or without the filePath initialised
+        //CONSTRUCTORS//
+
         public PoolBuilder()
         {
             filePath = string.Empty;
@@ -22,7 +26,7 @@ namespace BinReader
         }
 
 
-        //Properties
+        //PROPERTIES//
         public string FilePath
         {
             get { return filePath; }
@@ -31,12 +35,15 @@ namespace BinReader
 
         public List<Soldier> Pool
         {
-            get { return pool; }
+            get { return pool; } //the pool isn't meant to be modified directly
         }
 
-        //Functions
 
-        //construct the pool from the provided file
+        //FUNCTIONS//
+
+        /// <summary>
+        /// Construct the pool from the provided file.
+        /// </summary>
         public void BuildPoolFromFile()
         {
             //check if the provided file is alive
@@ -99,10 +106,13 @@ namespace BinReader
             }
         }
 
-        /* Designed just for reading gender: reads until the *second* piece of non-zero data, and grabs it
-         * (this is because gender has a nonzero piece of data prior to the gender marker, breaking ReadData)
-         * if 1, it returns "Male", if 0, it returns "Female", else it returns "ERROR"
-         */
+        /// <summary>
+        /// Variant of ReadData for reading gender. Reads until the *second* piece of nonzero data,
+        /// converts it into a gender, and returns it. This is because gender has data prior to the gender marker,
+        /// which breaks ReadData; and gender needs to be converted into an actual gender.
+        /// </summary>
+        /// <param name="reader">The BinaryReader processing the file.</param>
+        /// <returns>"Male", "Female", or "Error".</returns>
         private static string ReadGender(BinaryReader reader)
         {
             //need to skip the first bit of data (usually an 04)
@@ -120,6 +130,7 @@ namespace BinReader
                     //if counter is now 2, we're on our second bit of data, so nextChar is our desired data
                     if (counter == 2)
                     {
+                        //1 is male, 2 is female, anything else is an error
                         if (nextChar == 1) { return "Male"; }
                         else if (nextChar == 2) { return "Female"; }
                         else { return "ERROR"; }
@@ -134,9 +145,12 @@ namespace BinReader
             }
         }
 
-        /* skip all characters lower than the lowest printable ASCII character (i.e. '!')
-         * then once a printable character is hit, keep reading until first non-printable character, then return the read data
-         */
+        /// <summary>
+        /// Reads a continuous string of data from the .bin file. Skips all byte values lower than the lowest printable
+        /// ASCII character (i.e. '!'), then keeps reading once a printable character is hit until the first non-printable character.
+        /// </summary>
+        /// <param name="reader">The BinaryReader processing the file.</param>
+        /// <returns>The string of data read from the bin.</returns>
         private static string ReadData(BinaryReader reader)
         {
             //lowest possible value for me to give a damn tbh
@@ -161,7 +175,7 @@ namespace BinReader
                     }
 
                     //once complete, convert buffer to a string and return
-                    string str = new(chars.ToArray());
+                    string str = new([.. chars]);
                     return str;
                 }
 
@@ -170,9 +184,12 @@ namespace BinReader
             }
         }
 
-        /* reads until a specific string has been located in the file
-         * returns 0 if the string has been found and read, 1 if we've hit end-of-file
-         */
+        /// <summary>
+        /// Reads until a specific string has been located in the file, and moves the BinaryReader past that string.
+        /// </summary>
+        /// <param name="reader">The BinaryReader processing the file.</param>
+        /// <param name="str">The string to be located.</param>
+        /// <returns>0 if the string has been found and read, 1 if we've hit end-of file.</returns>
         private static int FindString(BinaryReader reader, string str)
         {
             //keep going until the string has been found
@@ -200,9 +217,12 @@ namespace BinReader
             }
         }
 
-        /* reads until a desired character (given as their UTF-8 hex code in decimal) is found, or the file ends
-         * returns a 1 if the end of the file has been hit and a 0 otherwise
-         */
+        /// <summary>
+        /// Reads until a desired character (given as their UTF-8 hex code in decimal) is found, or the file ends.
+        /// </summary>
+        /// <param name="reader">The BinaryReader processing the file.</param>
+        /// <param name="character">The code of the character to be located.</param>
+        /// <returns>1 if the end of the file has been hit, 0 otherwise.</returns>
         private static int FindCharacter(BinaryReader reader, int character)
         {
             //while the reader has not hit end-of-file

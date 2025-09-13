@@ -5,6 +5,8 @@
     /// </summary>
     public class Soldier
     {
+        //VARIABLES//
+
         private string firstName = "";      //soldier's first name
         private string lastName = "";       //soldier's last name
         private string nickName = "";       //soldier's callsign (it's spelled this way in the bin file don't @ me)
@@ -12,6 +14,9 @@
         private string gender = "";         //soldier's gender
         private string nationality = "";    //soldier's nationality
         //private string[] bio;             //soldier's bio (I have no idea how to do bios right now)
+
+
+        //PROPERTIES//
 
         //getters and setters baby, we all love some getters and setters
         //god I love Properties
@@ -51,10 +56,15 @@
             set { nationality = value; }
         }
 
-        //constructs and returns a list of the soldier's property
+
+        //FUNCTIONS//
+
+        /// <summary>
+        /// Converts the soldier's details into a list
+        /// </summary>
+        /// <returns></returns>
         public string[] SoldierToArray()
         {
-            ///flagging this for future me, if something borks it might be this thing
             string[] soldierArray = [firstName, lastName, nickName, soldierClass, gender, nationality];
             return soldierArray;
         }
