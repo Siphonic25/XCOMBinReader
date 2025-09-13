@@ -97,6 +97,9 @@ namespace BinReader
                         }
                     }
                 }
+
+                //with the pool complete, delete the duplicates from it
+                RemoveDuplicates();
             }
 
             //the file does not exist; throw up an error message
@@ -105,6 +108,45 @@ namespace BinReader
                 Console.WriteLine("ERROR: The file you have specified does not exist.");
             }
         }
+
+        //Goal: for whatever reason, there's a whole bunch of duplicates in any given pool
+        //delete those
+
+        //currently defining a duplicate as two characters with idential first, last, and nicknames.
+        private void RemoveDuplicates()
+        {
+            //the time complexity on this is gonna be a bitch
+
+            //for every soldier in the pool
+            for (int i = 0; i < pool.Count; i++)
+            {
+                //increment through the following soldiers
+                for (int j = i + 1; j < pool.Count; j++)
+                {
+                    //compare first, last, then nicknames
+                    //if they're not equal at any point, move onto next soldier
+                    if (String.Equals(pool[i].FirstName, pool[j].FirstName))
+                    {
+                        if (String.Equals(pool[i].LastName, pool[j].LastName))
+                        {
+                            if (String.Equals(pool[i].NickName, pool[j].NickName))
+                            {
+                                //we've found a duplicate, so remove it
+                                //then *decrement* j, since all subsequent indexes will be lowered by 1
+                                //and we want to avoid skipping whichever soldier is now in j's place
+                                pool.RemoveAt(j);
+                                j--;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+
+
 
         /// <summary>
         /// Variant of ReadData for reading gender. Reads until the *second* piece of nonzero data,
