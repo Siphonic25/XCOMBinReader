@@ -125,7 +125,9 @@ namespace BinReader
             }
         }
 
-
+        //Functions to be added
+        //A FormatData function to do formatting on the read data
+        //a ReadBio version of ReadData (skips until printable character, then reads until an 05 byte)
 
 
 
